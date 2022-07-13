@@ -1,12 +1,12 @@
-name: Cancel PR
+name: Cancel previous pr pushs
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI 2"]
   pull_request:
-    types: [closed]
+
 jobs:
-  cleanup:
+  cancel:
     name: 'Cleanup After PR Closed'
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -15,4 +15,6 @@ jobs:
         uses: styfle/cancel-workflow-action@0.9.1
         with:
           ignore_sha: true
+          all_but_latest: true
+          access_token: ${{ github.token }}
           workflow_id: ${{ github.event.workflow.id }}
