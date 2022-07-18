@@ -12,8 +12,19 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      match: ${{ steps.check-branch.outputs.match }}
+    steps:
+      - name: Check Branch
+        id: check-branch
+        run: |
+          echo ::set-output name=match::true
+
   test:
     runs-on: ubuntu-latest
+    needs: check
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
